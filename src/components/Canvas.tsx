@@ -1576,10 +1576,9 @@ const Glyph = memo(function Glyph({ kind }: { kind: NodeKind }) {
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      {KIND_ICON[kind].map(([tag, attrs]) => {
-        const { key, ...rest } = attrs;
-        return createElement(tag, { key, ...rest });
-      })}
+      {KIND_ICON[kind].map(([tag, attrs], i) =>
+        createElement(tag, { key: i, ...attrs }),
+      )}
     </g>
   );
 });

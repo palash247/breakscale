@@ -99,10 +99,9 @@ function Glyph({ kind }: { kind: NodeKind }) {
       role="presentation"
       aria-hidden="true"
     >
-      {KIND_ICON[kind].map(([tag, attrs]) => {
-        const { key, ...rest } = attrs;
-        return createElement(tag, { key, ...rest });
-      })}
+      {KIND_ICON[kind].map(([tag, attrs], i) =>
+        createElement(tag, { key: i, ...attrs }),
+      )}
     </svg>
   );
 }

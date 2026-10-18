@@ -1,3 +1,4 @@
+import type { IconNode } from 'lucide';
 import type { NodeKind } from '../sim/types';
 
 /* ------------------------------------------------------------------ *
@@ -7,16 +8,19 @@ import type { NodeKind } from '../sim/types';
  * stroke weight, which is what makes thirty-three of them read as a family
  * rather than as thirty-three separately-sourced pictures.
  *
- * WHY `__iconNode` AND NOT THE COMPONENTS. Each lucide-react icon module
- * exports the React component (default) and `__iconNode`, the list of SVG
- * primitives ([tag, attrs] pairs) the component is built from. The canvas
- * draws every node inside ONE parent <svg>; a component that renders its
- * own <svg> root would have to be nested as an inner viewport, while the
- * primitive list can be painted straight into a positioned <g> exactly the
- * way the old hand-drawn paths were. So this module re-exports the
- * primitives, and each consumer owns one tiny renderer. The deep imports
- * are typed by lucide-icons.d.ts and are exactly as tree-shakeable as the
- * barrel: only the thirty-three modules named here are bundled.
+ * WHY `lucide` AND NOT THE lucide-react COMPONENTS. The framework-free
+ * `lucide` package exports each icon as its list of SVG primitives
+ * ([tag, attrs] pairs), the same drawing the React components are built
+ * from. The canvas draws every node inside ONE parent <svg>; a component
+ * that renders its own <svg> root would have to be nested as an inner
+ * viewport, while the primitive list can be painted straight into a
+ * positioned <g> exactly the way the old hand-drawn paths were. So this
+ * module re-exports the primitives, and each consumer owns one tiny
+ * renderer. These are the package's public named exports, so a version
+ * bump cannot quietly change their shape the way lucide-react's internal
+ * per-icon modules did, and `lucide` is side-effect free, so only the
+ * thirty-three icons named here are bundled. Keep its version in step with
+ * lucide-react so the two packages draw the same icon set.
  *
  * CHOOSING RULES, in priority order:
  *   BEHAVIOUR   the icon depicts what the component DOES to traffic, not
@@ -31,44 +35,46 @@ import type { NodeKind } from '../sim/types';
  *               outlines (globe, clock) stay unique in the set.
  * ------------------------------------------------------------------ */
 
-/* Traffic */
-import { __iconNode as icClient } from 'lucide-react/dist/esm/icons/monitor-smartphone.mjs';
-import { __iconNode as icLb } from 'lucide-react/dist/esm/icons/split.mjs';
-import { __iconNode as icCdn } from 'lucide-react/dist/esm/icons/cloud-download.mjs';
-import { __iconNode as icRegion } from 'lucide-react/dist/esm/icons/globe.mjs';
-/* Compute */
-import { __iconNode as icService } from 'lucide-react/dist/esm/icons/server.mjs';
-import { __iconNode as icWorker } from 'lucide-react/dist/esm/icons/cog.mjs';
-import { __iconNode as icLambda } from 'lucide-react/dist/esm/icons/square-function.mjs';
-import { __iconNode as icEdgecompute } from 'lucide-react/dist/esm/icons/cloud-lightning.mjs';
-import { __iconNode as icTranscoder } from 'lucide-react/dist/esm/icons/film.mjs';
-import { __iconNode as icCron } from 'lucide-react/dist/esm/icons/calendar-clock.mjs';
-/* Data */
-import { __iconNode as icDb } from 'lucide-react/dist/esm/icons/database.mjs';
-import { __iconNode as icCache } from 'lucide-react/dist/esm/icons/database-zap.mjs';
-import { __iconNode as icReplica } from 'lucide-react/dist/esm/icons/database-backup.mjs';
-import { __iconNode as icShard } from 'lucide-react/dist/esm/icons/columns-3.mjs';
-import { __iconNode as icObjectstore } from 'lucide-react/dist/esm/icons/package.mjs';
-import { __iconNode as icSearchindex } from 'lucide-react/dist/esm/icons/text-search.mjs';
-import { __iconNode as icTimeseriesdb } from 'lucide-react/dist/esm/icons/chart-line.mjs';
-import { __iconNode as icGraphdb } from 'lucide-react/dist/esm/icons/waypoints.mjs';
-import { __iconNode as icColdstorage } from 'lucide-react/dist/esm/icons/snowflake.mjs';
-import { __iconNode as icVectordb } from 'lucide-react/dist/esm/icons/chart-scatter.mjs';
-import { __iconNode as icWritebehind } from 'lucide-react/dist/esm/icons/hard-drive-download.mjs';
-/* Messaging */
-import { __iconNode as icQueue } from 'lucide-react/dist/esm/icons/rows-3.mjs';
-import { __iconNode as icStreambroker } from 'lucide-react/dist/esm/icons/logs.mjs';
-import { __iconNode as icPubsub } from 'lucide-react/dist/esm/icons/share-2.mjs';
-import { __iconNode as icWebsocket } from 'lucide-react/dist/esm/icons/cable.mjs';
-import { __iconNode as icRetryqueue } from 'lucide-react/dist/esm/icons/list-restart.mjs';
-/* Control */
-import { __iconNode as icAutoscaler } from 'lucide-react/dist/esm/icons/scaling.mjs';
-import { __iconNode as icRatelimiter } from 'lucide-react/dist/esm/icons/funnel.mjs';
-import { __iconNode as icBreaker } from 'lucide-react/dist/esm/icons/unplug.mjs';
-import { __iconNode as icApigateway } from 'lucide-react/dist/esm/icons/door-open.mjs';
-import { __iconNode as icSidecar } from 'lucide-react/dist/esm/icons/blocks.mjs';
-import { __iconNode as icBulkhead } from 'lucide-react/dist/esm/icons/square-split-horizontal.mjs';
-import { __iconNode as icLoadshedder } from 'lucide-react/dist/esm/icons/funnel-x.mjs';
+import {
+  /* Traffic */
+  MonitorSmartphone as icClient,
+  Split as icLb,
+  CloudDownload as icCdn,
+  Globe as icRegion,
+  /* Compute */
+  Server as icService,
+  Cog as icWorker,
+  SquareFunction as icLambda,
+  CloudLightning as icEdgecompute,
+  Film as icTranscoder,
+  CalendarClock as icCron,
+  /* Data */
+  Database as icDb,
+  DatabaseZap as icCache,
+  DatabaseBackup as icReplica,
+  Columns3 as icShard,
+  Package as icObjectstore,
+  TextSearch as icSearchindex,
+  ChartLine as icTimeseriesdb,
+  Waypoints as icGraphdb,
+  Snowflake as icColdstorage,
+  ChartScatter as icVectordb,
+  HardDriveDownload as icWritebehind,
+  /* Messaging */
+  Rows3 as icQueue,
+  Logs as icStreambroker,
+  Share2 as icPubsub,
+  Cable as icWebsocket,
+  ListRestart as icRetryqueue,
+  /* Control */
+  Scaling as icAutoscaler,
+  Funnel as icRatelimiter,
+  Unplug as icBreaker,
+  DoorOpen as icApigateway,
+  Blocks as icSidecar,
+  SquareSplitHorizontal as icBulkhead,
+  FunnelX as icLoadshedder,
+} from 'lucide';
 
 /**
  * Shared, non-component values used by both the canvas and the palette.
@@ -87,7 +93,7 @@ export const NODE_DND_MIME = 'application/x-breakscale-node';
  * primitives (chart-scatter's points) carry their own fill="currentColor",
  * which the renderer must pass through untouched.
  */
-export type IconNode = [elementName: string, attrs: Record<string, string>][];
+export type { IconNode };
 
 /**
  * The kind -> icon table. The reasoning for each pick is inline, because a
